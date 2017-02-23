@@ -1,3 +1,11 @@
+$ssh_service=$::operatingsystem?{
+/Ubuntu|Debian/=>'ssh',
+default        =>'sshd',
+}
+
+
+
+
 class puppet {
   file { '/usr/local/bin/papply':
     source =>'puppet:///modules/puppet/papply.sh',
@@ -12,6 +20,10 @@ class puppet {
 #    owner  =>'root',
 #    mode   =>'0600',
 #  }
+#service {$ssh_service:
+#ensure=>running,
+#}
+
   cron { 'run-puppet':
     ensure  =>present,
     user    =>'root',
@@ -19,5 +31,13 @@ class puppet {
     minute  =>'*/30',
     hour    =>'*',
   }
+  cron { 'run-puppet-for-hardtime':
+    ensure  =>present,
+    user    =>'root',
+    command =>'/usr/local/bin/pull-updates',
+    minute  =>'00',
+    hour    =>inline_template('<%=@hostname.sum%24%>'),
+  }
 }
+
 

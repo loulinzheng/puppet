@@ -1,0 +1,16 @@
+node 'kali','kali2' {
+  if tagged('test1') {
+
+   file {'/tmp/hello':
+     content=>"Hello World\n",
+     }
+  }
+ if tagged('test2'){
+  # include puppet
+      notify {'this is my testright':}
+   file {'/tmp/test':
+    content=>"the right\n",
+    }
+  }
+ }
+

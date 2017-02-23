@@ -1,0 +1,6 @@
+#access to web ports
+iptables -A INPUT -p tcp --dport ${WEB} -j ACCEPT
+iptables -A INPUT -p tcp --dport ${WEB_SSL} -j ACCEPT
+#sendmail from web applicattions
+iptables -A OUTPUT -p tcp --dport ${SMTP} -j ACCEPT
+
